@@ -11,14 +11,6 @@ var vm = {
     vm.name = m.prop('');
     vm.tel = m.prop('');
     vm.list = m.prop([]);
-    vm.list().push(new Address({
-      name: 'あいうえお',
-      tel: '123'
-    }));
-    vm.list().push(new Address({
-      name: 'かきくけこ',
-      tel: '456'
-    }));
     vm.addAddress = function() {
       if (vm.name() === '') return;
       if (vm.tel() === '') return;
