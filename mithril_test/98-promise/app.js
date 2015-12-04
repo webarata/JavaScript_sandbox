@@ -1,56 +1,29 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-// http://qiita.com/joe-re/items/483ddcbe3d04a0a1cebf
-// のJavaScript版
-
-var m = require('mithril');
-
 'use strict';
 
-var vm = {
-  init: function() {
-    vm.image = m.prop(null);
-    vm.fileChange = function(e) {
-      var file = e.target.files[0];
-      if (!file) {
-        vm.image(null);
-        return;
-      }
-      var fr = new FileReader();
-      fr.readAsDataURL(file);
-      m.startComputation();
-      fr.onload = function(event) {
-        vm.image(event.target.result);
-        m.endComputation();
-      };
+var m = require('mithril');
+var fs = require('fs');
+
+var readFileAsync = function(name) {
+  var deferred = m.deferred();
+  fs.readFile(name, {
+    encoding: 'utf8'
+  }, function(error, content) {
+    if (error) {
+      return deferred.reject(error);
     }
-  }
+    return deferred.resolve(contetn);
+  });
+  return deferred.promise;
 };
 
-var controller = function() {
-  vm.init();
-};
-
-
-var view = function() {
-  return m('div', [
-    m('input[type=file]', {
-      onchange: vm.fileChange
-    }),
-    m('img', {
-      src: vm.image(),
-      style: {
-        display: vm.image() ? 'inline-block' : 'none'
-      }
-    })
-  ]);
-};
-
-m.mount(document.getElementById('root'), {
-  controller: controller,
-  view: view
+readFileAsync("存在しないファイル.txt").then(function(result) {
+  console.log(result);
+}, function(error) {
+  console.error(error);
 });
 
-},{"mithril":2}],2:[function(require,module,exports){
+},{"fs":3,"mithril":2}],2:[function(require,module,exports){
 var m = (function app(window, undefined) {
 	var OBJECT = "[object Object]", ARRAY = "[object Array]", STRING = "[object String]", FUNCTION = "function";
 	var type = {}.toString;
@@ -1210,5 +1183,7 @@ var m = (function app(window, undefined) {
 
 if (typeof module != "undefined" && module !== null && module.exports) module.exports = m;
 else if (typeof define === "function" && define.amd) define(function() {return m});
+
+},{}],3:[function(require,module,exports){
 
 },{}]},{},[1]);

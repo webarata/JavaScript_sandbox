@@ -1,53 +1,23 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-// http://qiita.com/joe-re/items/483ddcbe3d04a0a1cebf
-// のJavaScript版
-
 var m = require('mithril');
 
 'use strict';
 
-var vm = {
-  init: function() {
-    vm.image = m.prop(null);
-    vm.fileChange = function(e) {
-      var file = e.target.files[0];
-      if (!file) {
-        vm.image(null);
-        return;
-      }
-      var fr = new FileReader();
-      fr.readAsDataURL(file);
-      m.startComputation();
-      fr.onload = function(event) {
-        vm.image(event.target.result);
-        m.endComputation();
-      };
-    }
-  }
+var waitAndMessage = function(duration, message) {
+  var deferred = m.deferred();
+  setTimeout(function()  {
+    console.log(message);
+    deferred.resolve(duration);
+  }, duration);
+  return deferred.promise;
 };
 
-var controller = function() {
-  vm.init();
-};
-
-
-var view = function() {
-  return m('div', [
-    m('input[type=file]', {
-      onchange: vm.fileChange
-    }),
-    m('img', {
-      src: vm.image(),
-      style: {
-        display: vm.image() ? 'inline-block' : 'none'
-      }
-    })
-  ]);
-};
-
-m.mount(document.getElementById('root'), {
-  controller: controller,
-  view: view
+m.sync([
+  waitAndMessage(2000, '2秒経過'),
+  waitAndMessage(1000, '1秒経過')
+]).then(function(args) {
+  console.log('両方終了');
+  console.log(args);
 });
 
 },{"mithril":2}],2:[function(require,module,exports){

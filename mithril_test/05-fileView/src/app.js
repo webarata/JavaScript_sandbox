@@ -36,7 +36,10 @@ var view = function() {
       onchange: vm.fileChange
     }),
     m('img', {
-      src: vm.image()
+      src: vm.image(),
+      style: {
+        display: vm.image() ? 'inline-block' : 'none'
+      }
     })
   ]);
 };
