@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fc2dd9b3-1fe2-4559-bde5-0d5d88a480d6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../doc/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../doc/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="fc2dd9b3-1fe2-4559-bde5-0d5d88a480d6" name="Default" comment="" />
     <ignored path="mithril_test.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
