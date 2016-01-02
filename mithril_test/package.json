@@ -12,6 +12,7 @@
   "author": "",
   "license": "APL",
   "dependencies": {
+    "express": "^4.13.3",
     "mithril": "^0.2.2-rc.1"
   },
   "devDependencies": {
