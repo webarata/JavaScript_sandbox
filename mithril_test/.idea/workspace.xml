@@ -2,13 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fc2dd9b3-1fe2-4559-bde5-0d5d88a480d6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gitignore" afterPath="$PROJECT_DIR$/../.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/95-play/src/app.js" afterPath="$PROJECT_DIR$/95-play/src/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/96-component/src/app.js" afterPath="$PROJECT_DIR$/96-component/src/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/97-todo/server.js" afterPath="$PROJECT_DIR$/97-todo/server.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/97-todo/src/app.js" afterPath="$PROJECT_DIR$/97-todo/src/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/95-play/1.mp3" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/95-play/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/95-play/src/app.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/96-component/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/96-component/src/app.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/97-todo/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/97-todo/server.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/97-todo/src/app.js" afterPath="" />
     </list>
     <ignored path="mithril_test.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,18 +29,7 @@
     <favorites_list name="mithril_test" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/95-play/src/app.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.07064364">
-              <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -243,24 +233,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="95-play" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mithril_test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mithril_test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="95-play" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
