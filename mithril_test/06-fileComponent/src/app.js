@@ -1,9 +1,10 @@
+'use strict';
+
 // 参考
 // http://qiita.com/joe-re/items/483ddcbe3d04a0a1cebf
 
 var m = require('mithril');
 
-'use strict';
 
 var FileView = {};
 

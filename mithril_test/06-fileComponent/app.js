@@ -30,6 +30,7 @@ FileView.vm = {
 
 FileView.controller = function() {
   FileView.vm.init();
+  console.log('"');
 };
 
 
