@@ -4,7 +4,6 @@
 
 var m = require('mithril');
 
-
 var FileView = {};
 
 FileView.vm = {
