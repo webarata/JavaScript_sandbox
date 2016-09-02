@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/mithril_test.iml" filepath="$PROJECT_DIR$/.idea/mithril_test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/JavaScript_sandbox.iml" filepath="$PROJECT_DIR$/.idea/JavaScript_sandbox.iml" />
     </modules>
   </component>
 </project>
