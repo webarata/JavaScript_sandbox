@@ -8,8 +8,11 @@
  </head>
  <body>
   <div id="example">
-   <button v-on:click="greet">Greet</button>
+   <input type="text" v-model="msg">
+   <child v-on:child-msg="handleIt"></child>
+   <child v-bind:my-message="msg"></child>
   </div>
+  <template id="aa"><a href="test">test</a></template>
   <script src="vue.min.js"></script>
   <script src="test.js"></script>
  </body>

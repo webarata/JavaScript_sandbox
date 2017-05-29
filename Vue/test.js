@@ -1,17 +1,26 @@
-var vm = new Vue({
+var MyComponent = Vue.extend({
+  template: '#aa'
+});
+
+Vue.component('child', {
+  // props を宣言します
+  props: ['msg'],
+  template: '<span>{{ msg }}</span>'
+});
+
+new Vue({
   el: '#example',
-  data: {
-    name: 'Vue.js'
+  data: function() {
+    return {
+      msg: ''
+    };
   },
-  // `methods` オブジェクトの下にメソッドを定義します
-  methods: {
-    greet: function (event) {
-      // 内部メソッドの `this` は vm インスタンスを指します
-      alert('Hello ' + this.name + '!');
-      // `event` はネイティブ DOM イベントです
-      alert(event.target.tagName);
+  events: {
+    'child-msg': function (msg) {
+      // イベントのコールバックでの `this` は
+      // それが登録されたとき、自動的にインスタンスに結びつけます
+      this.messages.push(msg)
     }
   }
 });
-// JavaScript でもメソッドを起動できます
-vm.greet() // -> 'Hello Vue.js!'
+

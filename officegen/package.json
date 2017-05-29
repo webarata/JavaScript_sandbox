@@ -1,0 +1,13 @@
+{
+  "name": "test",
+  "version": "0.1.0",
+  "description": "test",
+  "main": "main.js",
+  "dependencies": {
+    "officegen": "^0.2.11",
+    "officegen-2": "^0.3.7"
+  },
+  "devDependencies": {
+    "webpack": "^1.13.2"
+  }
+}
