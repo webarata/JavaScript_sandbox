@@ -3,7 +3,9 @@
 
   const GAME = {
     MAX_BULLET: 5,
-    INTERVAL_MS: 100
+    BULLET_SPPET: 8,
+    INTERVAL_MS: 100,
+    PLAYER_SPEED: 5
   };
 
   const KeyCode = {
@@ -18,13 +20,19 @@
   let canvas = document.getElementById('canvas');
   let ctx = canvas.getContext('2d');
 
+  class Field {
+    constructor(width, height) {
+      this.width = width;
+      this.height = height;
+    }
+  }
+
   class Player {
-    constructor(x, y, speed, canvasWidth, canvasHeight) {
+    constructor(x, y, speed, field) {
       this.x = x;
       this.y = y;
       this.speed = speed;
-      this.canvasWidth = canvasWidth;
-      this.canvasHeight = canvasHeight;
+      this.field = field;
 
       this.size = 10;
 
@@ -43,8 +51,8 @@
 
     moveRight() {
       this.x = this.x + this.speed;
-      if (this.x >= this.canvasWidth) {
-        this.x = this.canvasWidth;
+      if (this.x >= this.field.width) {
+        this.x = this.field.width;
       }
     }
 
@@ -57,8 +65,8 @@
 
     moveDown() {
       this.y = this.y + this.speed;
-      if (this.y >= this.canvasHeight) {
-        this.y = this.canvasHeight;
+      if (this.y >= this.field.height) {
+        this.y = this.field.height;
       }
     }
   }
@@ -73,14 +81,11 @@
   }
 
   class Enemy {
-    constructor(x, y, width, height) {
+    constructor(x, y, field) {
       this.x = x;
       thix.y = y;
-      this.width = width;
-      this.height = height;
+      this.field = field;
     }
-
-
   }
 
   class Controller {
@@ -90,7 +95,8 @@
       document.addEventListener("keydown", this.onKeyDown.bind(this));
       document.addEventListener("keyup", this.onKeyUp.bind(this));
 
-      this.player = new GAME.Player(50, 200, 6, canvas.width, canvas.height);
+      const field = new Field(canvas.width, canvas.height);
+      this.player = new GAME.Player(50, 200, GAME.PLAYER_SPEED, field);
 
       this.isShotOk = false;
       this.beforeShotTime = new Date();
@@ -136,8 +142,8 @@
       if (this.keyMap.get(KeyCode.SPACE)) {
         for (let i = 0; i < GAME.MAX_BULLET; i++) {
           if (!this.player.bulletList[i].live) {
-            this.player.bulletList[i] = new GAME.Bullet(this.player.x, this.player.y, 8, true);
-            break;
+            this.player.bulletList[i] = new GAME.Bullet(this.player.x, this.player.y, GAME.BULLET_SPPET, true);
+            return;
           }
         }
       }
@@ -162,6 +168,7 @@
 
   GAME.Player = Player;
   GAME.Bullet = Bullet;
+  GAME.Field = Field;
   GAME.Controller = Controller;
 
   const controller = new GAME.Controller();
