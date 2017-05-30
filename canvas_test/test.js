@@ -5,7 +5,8 @@
     MAX_BULLET: 5,
     BULLET_SPPET: 8,
     INTERVAL_MS: 100,
-    PLAYER_SPEED: 5
+    PLAYER_SPEED: 5,
+    ENEMY_COUNT: 5
   };
 
   const KeyCode = {
@@ -17,8 +18,8 @@
   };
 
   /* Canvas要素の定義など */
-  let canvas = document.getElementById('canvas');
-  let ctx = canvas.getContext('2d');
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
 
   class Field {
     constructor(width, height) {
@@ -101,7 +102,7 @@
       this.isShotOk = false;
       this.beforeShotTime = new Date();
 
-      this.enemyList = [];
+      this.enemyList = new Array(GAME.ENEMY_COUNT);
     }
 
     onKeyDown(event) {
@@ -151,7 +152,7 @@
 
     drawBullet() {
       for (let i = 0; i < this.player.bulletList.length; i++) {
-        let bullet = this.player.bulletList[i];
+        const bullet = this.player.bulletList[i];
         if (bullet.live) {
           bullet.y = bullet.y - bullet.speed;
           if (bullet.y < 0) {
