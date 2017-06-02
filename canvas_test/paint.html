@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+ <head>
+  <meta charset="utf-8">
+  <title>お絵かきツール</title>
+  <style>
+   #toolbar {
+     font-size: small;
+     margin-bottom: 3px;
+   }
+   #canvas {
+      border: 1px solid #000;
+   }
+  </style>
+ </head>
+ <body>
+  <div id="paintTool">
+   <div id="toolbar">
+    <label for="drawTool">描画ツール:</label>
+    <select id="drawTool">
+     <option value="brush">ブラシ</option>
+     <option value="line">線</option>
+     <option value="circle">円</option>
+     <option value="circleFill">塗りつぶしの円</option>
+    </select>
+    <label for="color">色:</label>
+    <input id="color" type="color">
+    <label for="lineWidth">線幅</label>
+    <select id="lineWidth">
+     <option value="1">1</option>
+     <option value="2">2</option>
+     <option value="3">3</option>
+     <option value="4">4</option>
+     <option value="5">5</option>
+     <option value="6">6</option>
+     <option value="8">8</option>
+     <option value="10">10</option>
+     <option value="12">12</option>
+     <option value="14">14</option>
+     <option value="16">16</option>
+     <option value="20">20</option>
+     <option value="24">24</option>
+     <option value="28">28</option>
+    </select>
+    <label for="opacity">透明度</label>
+    <input id="opacity" type="number" min="0" max="1" step="0.05" value="1">
+   </div>
+   <canvas id="canvas" width="600" height="400"></canvas>
+  </div>
+  <script src="elt.js"></script>
+  <script src="painter.js"></script>
+  <script>
+   initPainter();
+  </script>
+ </body>
+</html>
