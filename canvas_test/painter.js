@@ -1,223 +1,332 @@
+'use strict';
+
 const PaintType = {
-  BRUSH: 1,
-  LINE: 2,
-  CIRCLE: 3,
-  CIRCLE_FILL: 4
+  BRUSH: 0,
+  LINE: 1,
+  CIRCLE: 2,
+  CIRCLE_FILL: 3
 };
 
-class CanvasModel {
-  constructor(width, height) {
-    this.width = width;
-    this.height = height;
-
-    this.drawing = false;
-    this.beforeImg = null;
-    this.beforeX = 0;
-    this.beforeY = 0;
-    this.x = 0;
-    this.y = 0;
+class Model {
+  constructor() {
+    this._attributeList = {};
+    this._handlerList = {};
   }
 
-  beginDraw(beforeX, beforeY, img) {
-    this.drawing = true;
-    this.beforeX = beforeX;
-    this.beforeY = beforeY;
-    this.beforeImg = img;
+  get(key) {
+    return this._attributeList[key];
   }
 
-  draw(x, y, img) {
-    this.x = x;
-    this.y = y;
-    this.beforeImg = img;
+  set(key, value) {
+    this._attributeList[key] = value;
+  }
+
+  on(event, handler) {
+    (this._handlerList[event] || (this._handlerList[event] = [])).push(handler);
+  }
+
+  _trigger(event, argList) {
+    const list = this._handlerList[event];
+    if (list) {
+      list.forEach(handler => {
+        handler(argList);
+      });
+    }
   }
 }
 
-class CanvasView {
-  constructor(el) {
-    this.$el = document.getElementById(el);
-    this.ctx = this.$el.getContext('2d');
-
-    this.$el.addEventListener('mousemove', this.onMouseMove.bind(this));
-    this.$el.addEventListener('mousedown', this.onMouseDown.bind(this));
-    this.$el.addEventListener('mouseup', this.onMouseUp.bind(this));
-
-    this.canvasModel = new CanvasModel(this.$el.width, this.$el.height);
+class View {
+  constructor() {
   }
 
-  onMouseMove(e) {
+  _setEl(elList) {
+    for (let key in elList) {
+      if (elList.hasOwnProperty(key)) {
+        this[elList[key]] = document.getElementById(key);
+      }
+    }
+  }
+
+  _setEvent(eventList) {
+    for (let key in eventList) {
+      if (eventList.hasOwnProperty(key)) {
+        const callback = eventList[key];
+        const keys = key.split(' ');
+        document.getElementById(keys[1]).addEventListener(keys[0], (e) => {
+          callback.call(this, e);
+        });
+      }
+    }
+  }
+
+  _setAppEvent(model, eventList) {
+    for (let key in eventList) {
+      if (eventList.hasOwnProperty(key)) {
+        const callback = eventList[key];
+        model.on(key, argList => {
+          callback.call(this, argList);
+        });
+      }
+    }
+  }
+}
+
+class CanvasModel extends Model {
+  constructor(width, height) {
+    super();
+    this._width = width;
+    this._height = height;
+
+    this._drawing = false;
+    this._beforeImg = null;
+    this._beforeX = 0;
+    this._beforeY = 0;
+    this._x = 0;
+    this._y = 0;
+
+    this._paintType = PaintType.BRUSH;
+    this._lineWidth = 1;
+    this._color = '#000';
+    this._opacity = 1.0;
+  }
+
+  get beforeImg() {
+    return this._beforeImg;
+  }
+
+  get x() {
+    return this._x;
+  }
+
+  get y() {
+    return this._y;
+  }
+
+  get beforeX() {
+    return this._beforeX;
+  }
+
+  get beforeY() {
+    return this._beforeY;
+  }
+
+  get paintType() {
+    return this._paintType;
+  }
+
+  get lineWidth() {
+    return this._lineWidth;
+  }
+
+  get color() {
+    return this._color;
+  }
+
+  get opacity() {
+    return this._opacity;
+  }
+
+  isTool (){
+    return !(this._paintType === PaintType.BRUSH);
+  }
+
+  beginDraw(beforeX, beforeY, img) {
+    this._drawing = true;
+    this._beforeX = beforeX;
+    this._beforeY = beforeY;
+    this._beforeImg = img;
+  }
+
+  moveDraw(x, y, img) {
+    if (!this._drawing) return;
+    this._x = x;
+    this._y = y;
+    if (!this.isTool()) {
+      this._beforeImg = img;
+    }
+
+    this._trigger('beginDraw');
+  }
+
+  moveTo() {
+    if (this._paintType !== PaintType.BRUSH) return;
+    this._beforeX = this.x;
+    this._beforeY = this.y;
+  }
+
+  endDraw(x, y, img) {
+    this._drawing = false;
+
+    this._trigger('endDraw');
+  }
+
+  setColor(color) {
+    this._color = color;
+    this._trigger('changeColor');
+  }
+
+  setLineWidth(lineWidth) {
+    this._lineWidth = lineWidth;
+    this._trigger('changeLineWidth');
+  }
+
+  setOpacity(opacity) {
+    this._opacity = opacity;
+    this._trigger('changeOpacity');
+  }
+
+  setPaintType(paintType) {
+    this._paintType = paintType;
+  }
+}
+
+class CanvasView extends View {
+  constructor(el, canvasModel) {
+    super();
+    this.$el = document.getElementById(el);
+    this._ctx = this.$el.getContext('2d');
+
+    this._ctx.strokeStyle = canvasModel.color;
+    this._ctx.fillStyle = canvasModel.color;
+    this._ctx.lineWidth = canvasModel.lineWidth;
+
+    this._setEvent({
+      'mousemove canvas': this._onMouseMove,
+      'mousedown canvas': this._onMouseDown,
+      'mouseup canvas': this._onMouseUp
+    });
+
+    this.canvasModel = canvasModel;
+
+    this._setAppEvent(this.canvasModel, {
+      'beginDraw': this._beginDraw,
+      'movePath': this._movePath,
+
+      'changeColor': this._onChangeColor,
+      'changeLineWidth': this._onChangeLineWidth,
+      'changeOpacity': this._onChangeOpacity
+    });
+  }
+
+  _onMouseMove(e) {
     const rect = e.target.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    this.canvasModel.draw(x, y, this.ctx.getImageData(0, 0, this.ctx.canvas.width, this.ctx.canvas.height));
+    if (this.canvasModel.isTool) {
+      this.canvasModel.moveDraw(x, y, this._ctx.getImageData(0, 0, this._ctx.canvas.width, this._ctx.canvas.height));
+    } else {
+      this.canvasModel.moveDraw(x, y, null);
+    }
   }
 
-  onMouseDown(e) {
+  _onMouseDown(e) {
     if (e.button === 0) {
       const rect = e.target.getBoundingClientRect();
       const beforeX = e.clientX - rect.left;
       const beforeY = e.clientY - rect.top;
-      this.canvasModel.beginDraw(beforeX, beforeY, this.ctx.getImageData(0, 0, this.ctx.canvas.width, this.ctx.canvas.height));
+      this.canvasModel.beginDraw(beforeX, beforeY, this._ctx.getImageData(0, 0, this._ctx.canvas.width, this._ctx.canvas.height));
     }
   }
 
-  onMouseUp() {
-  }
-}
-
-const canvasView = new CanvasView('canvas');
-
-class PaintCanvas {
-  constructor(ctx) {
-    this.ctx = ctx;
-    this.beforeX = 0;
-    this.beforeY = 0;
-    this.lineWidth = 1;
-    this.drawing = false;
-    this.color = '#000';
-    this.globalAlpha = 1.0;
-    this.paintType = PaintType.BRUSH
-
-    this.ctx.lineWidth = this.lineWidth;
-    this.ctx.strokeStyle = this.color;
-    this.ctx.fillStyle = this.color;
-    this.ctx.globalAlpha = this.globalAlpha;
-    this.ctx.lineCap = 'round';
-  }
-
-  setPaintType(paintType) {
-    this.paintType = paintType;
-  }
-
-  setColor(color) {
-    this.color = color;
-    this.ctx.strokeStyle = this.color;
-    this.ctx.fillStyle = this.color;
-  }
-
-  setLineWidth(lineWidth) {
-    this.lineWidth = lineWidth;
-    this.ctx.lineWidth = this.lineWidth;
-  }
-
-  setGlobalAlpha(globalAlpha) {
-    this.globalAlpha = globalAlpha;
-    this.ctx.globalAlpha = this.globalAlpha;
-  }
-
-  draw(x, y) {
-    switch (this.paintType) {
-      case PaintType.BRUSH:
-        this.ctx.beginPath();
-        this.ctx.moveTo(this.beforeX, this.beforeY);
-        this.ctx.lineTo(x, y);
-        this.ctx.stroke();
-        this.beforeX = x;
-        this.beforeY = y;
-        break;
-      case PaintType.LINE:
-        this.ctx.beginPath();
-        this.ctx.putImageData(this.beforeImg, 0, 0);
-        this.ctx.moveTo(this.beforeX, this.beforeY);
-        this.ctx.lineTo(x, y);
-        this.ctx.stroke();
-        break;
-      case PaintType.CIRCLE:
-        this.drawCircle(x, y, false);
-        break;
-      case PaintType.CIRCLE_FILL:
-        this.drawCircle(x, y, true);
-        break;
-    }
-  }
-
-  drawCircle(x, y, isFill) {
-    this.ctx.beginPath();
-    this.ctx.putImageData(this.beforeImg, 0, 0);
-    var dx = this.beforeX - x;
-    var dy = this.beforeY - y;
-    var r = Math.sqrt(dx * dx + dy * dy);
-    this.ctx.arc(this.beforeX, this.beforeY, r, 0, 2 * Math.PI, false);
-    if (isFill) {
-      this.ctx.fill();
-    } else {
-      this.ctx.stroke();
-    }
-  }
-
-  onMouseMove(e) {
-    if (!this.drawing) return;
+  _onMouseUp(e) {
     const rect = e.target.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    if (this.paintType === PaintType.BRUSH) {
-      if (x === this.beforeX && y === this.beforeY) return;
-    }
-    this.draw(x, y);
+    this.canvasModel.endDraw(x, y, this._ctx.getImageData(0, 0, this._ctx.canvas.width, this._ctx.canvas.height));
   }
 
-  onMouseDown(e) {
-    if (e.button === 0) {
-      this.beforeImg = this.ctx.getImageData(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-      this.drawing = true;
-      const rect = e.target.getBoundingClientRect();
-      this.beforeX = e.clientX - rect.left;
-      this.beforeY = e.clientY - rect.top;
+  _beginDraw(e) {
+    if (this.canvasModel.isTool()) {
+      this._ctx.putImageData(this.canvasModel.beforeImg, 0, 0);
+    }
+    if (this.canvasModel.paintType === PaintType.BRUSH ||
+      this.canvasModel.paintType === PaintType.LINE) {
+      this._ctx.beginPath();
+      this._ctx.moveTo(this.canvasModel.beforeX, this.canvasModel.beforeY);
+      this._ctx.lineTo(this.canvasModel.x, this.canvasModel.y);
+      this._ctx.stroke();
+      this.canvasModel.moveTo();
+    } else if (this.canvasModel.paintType === PaintType.CIRCLE ||
+      this.canvasModel.paintType === PaintType.CIRCLE_FILL) {
+      this._ctx.beginPath();
+      const dx = this.canvasModel.beforeX - this.canvasModel.x;
+      const dy = this.canvasModel.beforeY - this.canvasModel.y;
+      const r = Math.sqrt(dx * dx + dy * dy);
+      this._ctx.arc(this.canvasModel.beforeX, this.canvasModel.beforeY, r, 0, 2 * Math.PI, false);
+      if (this.canvasModel.paintType === PaintType.CIRCLE_FILL) {
+        this._ctx.fill();
+      } else {
+        this._ctx.stroke();
+      }
     }
   }
 
-  drawEnd(e) {
-    if (!this.drawing) return;
-    this.drawing = false;
-    const rect = e.target.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    this.draw(x, y);
+  _onChangeColor() {
+    this._ctx.strokeStyle = this.canvasModel.color;
+    this._ctx.fillStyle = this.canvasModel.color;
+  }
+
+  _onChangeLineWidth() {
+    this._ctx.lineWidth = this.canvasModel.lineWidth;
+  }
+
+  _onChangeOpacity() {
+    this._ctx.globalAlpha = this.canvasModel.opacity;
   }
 }
 
-function initPainter() {
-  const paintToolEl = document.getElementById('paintTool');
-  const canvasEl = document.getElementById('canvas');
-  const ctx = canvasEl.getContext('2d');
+class ToolbarView extends View {
+  constructor(el, canvasModel) {
+    super();
+    this.$el = document.getElementById(el);
 
-  const drawToolEl = document.getElementById('drawTool');
-  const colorEl = document.getElementById('color');
-  const lineWidthEl = document.getElementById('lineWidth');
-  const opacityEl = document.getElementById('opacity');
+    this._canvasModel = canvasModel;
 
-  const paintCanvas = new PaintCanvas(ctx);
+    this._setEvent({
+      'change drawTool': this._onChangeDrawTool,
+      'change color': this._onChangeColor,
+      'change lineWidth': this._onChangeLineWidth,
+      'change opacity': this._onChangeOpacity
+    });
+  }
 
-  drawToolEl.addEventListener('change', function (e) {
-    switch (this.value) {
+  _onChangeDrawTool(e) {
+    switch(e.target.value) {
       case 'brush':
-        paintCanvas.setPaintType(PaintType.BRUSH);
+        this._canvasModel.setPaintType(PaintType.BRUSH);
         break;
       case 'line':
-        paintCanvas.setPaintType(PaintType.LINE);
+        this._canvasModel.setPaintType(PaintType.LINE);
         break;
       case 'circle':
-        paintCanvas.setPaintType(PaintType.CIRCLE);
+        this._canvasModel.setPaintType(PaintType.CIRCLE);
         break;
       case 'circleFill':
-        paintCanvas.setPaintType(PaintType.CIRCLE_FILL);
+        this._canvasModel.setPaintType(PaintType.CIRCLE_FILL);
         break;
     }
-  });
+  }
 
-  colorEl.addEventListener('change', function (e) {
-    paintCanvas.setColor(this.value);
-  });
+  _onChangeColor(e) {
+    this._canvasModel.setColor(e.target.value);
+  }
 
-  lineWidthEl.addEventListener('change', function (e) {
-    paintCanvas.setLineWidth(this.value);
-  });
+  _onChangeLineWidth(e) {
+    this._canvasModel.setLineWidth(e.target.value);
+  }
 
-  opacityEl.addEventListener('change', function (e) {
-    paintCanvas.setGlobalAlpha(this.value);
-  });
-
-  canvasEl.addEventListener('mousemove', paintCanvas.onMouseMove.bind(paintCanvas));
-  canvasEl.addEventListener('mousedown', paintCanvas.onMouseDown.bind(paintCanvas));
-  canvasEl.addEventListener('mouseup', paintCanvas.drawEnd.bind(paintCanvas));
-//  canvasEl.addEventListener('mouseout', paintCanvas.drawEnd.bind(paintCanvas));
+  _onChangeOpacity(e) {
+    this._canvasModel.setOpacity(e.target.value);
+  }
 }
+
+class AppController {
+  constructor() {
+    this.canvasModel = new CanvasModel(600, 400);
+
+    new CanvasView('canvas', this.canvasModel);
+    new ToolbarView('toolbar', this.canvasModel);
+  }
+}
+
+new AppController();
