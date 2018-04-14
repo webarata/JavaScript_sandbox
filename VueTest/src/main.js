@@ -1,10 +1,10 @@
-import {hello} from './test';
-
-// sub.jsに定義されたJavaScriptを実行する。
-hello();
+const moment = require('moment');
+require('moment/locale/ja');
 
 (function() {
   'use strict';
+
+  moment.locale('ja');
 
   const app = new Vue({
     el: '#app',
@@ -13,7 +13,7 @@ hello();
     },
     computed: {
       hoge: function() {
-        return this.date + '!!!';
+        return moment(this.date).format('YYYYMMDDHHmmss');
       }
     }
   });

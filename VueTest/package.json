@@ -3,6 +3,7 @@
     "build": "webpack"
   },
   "devDependencies": {
+    "moment": "^2.22.0",
     "webpack": "^4.5.0",
     "webpack-cli": "^2.0.14"
   }
