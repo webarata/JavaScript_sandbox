@@ -1,24 +1,23 @@
-const moment = require('moment');
-require('moment/locale/ja');
+const moment = require("moment");
 
 (function() {
-  'use strict';
+  "use strict";
 
-  moment.locale('ja');
+  moment.locale("ja");
 
   const app = new Vue({
-    el: '#app',
+    el: "#app",
     data: {
       date: new Date()
     },
     computed: {
       hoge: function() {
-        return moment(this.date).format('YYYYMMDDHHmmss');
+        return moment(this.date).format("YYYYMMDDHHmmss");
       }
     }
   });
 
   setInterval(() => {
     app.date = new Date();
-  }, 1000)
+  }, 1000);
 })();

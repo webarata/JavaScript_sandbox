@@ -6,5 +6,8 @@
     "moment": "^2.22.0",
     "webpack": "^4.5.0",
     "webpack-cli": "^2.0.14"
+  },
+  "dependencies": {
+    "npm": "^5.8.0"
   }
 }
