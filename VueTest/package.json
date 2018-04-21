@@ -8,6 +8,7 @@
     "webpack-cli": "^2.0.14"
   },
   "dependencies": {
-    "npm": "^5.8.0"
+    "npm": "^5.8.0",
+    "vue": "^2.5.16"
   }
 }
