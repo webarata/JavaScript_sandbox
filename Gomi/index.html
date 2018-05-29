@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#4285f4">
+  <title>Vue.jsテスト</title>
+  <link rel="stylesheet" href="css/main.css">
+ </head>
+ <body>
+  <main id="app">
+   <div id="loader" class="loader" v-cloak>
+    <svg viewBox="0 0 32 32" width="32" height="32">
+     <circle id="spinner" cx="16" cy="16" r="14" fill="none"></circle>
+    </svg>
+   </div>
+   <div v-cloak>{{ viewDate }}</div>
+   <div v-cloak>{{ viewNextBurnDate }}</div>
+   <div v-cloak>{{ viewUntilBurnDay }}</div>
+   <div v-cloak>{{ viewNextBulkyDate }}</div>
+   <div v-cloak>{{ viewUntilBulkyDay }}</div>
+   <div v-cloak>{{ viewNextNonflammableDate }}</div>
+   <div v-cloak>{{ viewUntilNonflammableDay }}</div>
+  </main>
+  <script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/locale/ja.js"></script>
+  <script src="js/main.js"></script>
+ </body>
+</html>

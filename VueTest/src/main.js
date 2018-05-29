@@ -9,16 +9,20 @@ const moment = require('moment');
   const app = new Vue({
     el: '#app',
     data: {
-      date: new Date()
-    },
-    computed: {
-      hoge: function() {
-        return moment(this.date).format('YYYYMMDDHHmmss');
-      }
+      date: null,
+      time: null
     }
   });
 
+  const updateTime = function() {
+    const dateTime = moment(new Date()).format('YYYYMMDD HHmmss').split(' ');
+    app.date = dateTime[0];
+    app.time = dateTime[1];
+  };
+
+  updateTime();
+
   setInterval(() => {
-    app.date = new Date();
+    updateTime();
   }, 1000);
 })();
