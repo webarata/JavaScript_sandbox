@@ -90,8 +90,51 @@ main {
   height: 100vh;
 }
 
+.garbage-list {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.garbage-list > div {
+  border: 1px solid black;
+  flex: 1;
+  padding: 5px;
+}
+
+.garbage-item {
+  display: flex;
+  flex-direction: row;
+}
+
 .garbage-title {
-  font-size: 24px;
+  flex: 1;
+  font-size: 25px;
+  line-height: 1.2em;
+}
+
+.garbage-schedule {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.garbage-until-day {
+  color: #f00;
+  flex: 1;
+  font-size: 45px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.garbage-next-date {
+  color: #888;
+  font-size: 16px;
+  height: 1em;
+  text-align: right;
 }
 
 /*

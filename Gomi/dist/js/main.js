@@ -22,10 +22,14 @@
 
   Vue.component('garbage-item', {
     template: `
-      <div>
-       <div class="garbage-title">{{ this.garbage.garbageTitle }}</div>
-       <div>{{ viewUntilDay }}</div>
-       <div>{{ viewNextDate }}</div>
+      <div class="garbage-item">
+       <div class="garbage-title">
+        <div v-for="garbageTitle in garbage.garbageTitleList">{{ garbageTitle }}</div>
+       </div>
+       <div class="garbage-schedule">
+        <div class="garbage-until-day"><span>{{ viewUntilDay }}</span></div>
+        <div class="garbage-next-date">{{ viewNextDate }}</div>
+       </div>
       </div>`,
     data: function() {
       return {
@@ -67,7 +71,7 @@
 
   Vue.component('garbage-list', {
     template: `
-      <div>
+      <div class="garbage-list">
        <garbage-item :now-date="nowDate" :garbage="garbage" v-for="garbage in garbageList" :key="garbage.key"></garbage-item>
       </div>`,
     data: function() {
@@ -94,7 +98,7 @@
       region: 'ichiki',
       garbageList: [{
         key: 0,
-        garbageTitle: '',
+        garbageTitleList: [],
         garbageDateList: []
       }]
     },
