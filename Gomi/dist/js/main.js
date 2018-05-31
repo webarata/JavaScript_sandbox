@@ -22,7 +22,8 @@
 
   Vue.component('garbage-item', {
     template: `
-      <div class="garbage-item">
+      <div class="garbage-item"
+       :class="{ today: isToday, tomorrow: isTomorrow, 'day-after-tomorrow': isDayAfterTomorrow }">
        <div class="garbage-title">
         <div v-for="garbageTitle in garbage.garbageTitleList">{{ garbageTitle }}</div>
        </div>
@@ -36,8 +37,8 @@
       }
     },
     props: {
-      nowDate: '',
-      garbage: {}
+      nowDate: String,
+      garbage: Object
     },
     computed: {
       nextDate: function() {
@@ -51,6 +52,15 @@
       },
       viewUntilDay: function() {
         return this.getViewUntilDay(this.untilDay);
+      },
+      isToday: function() {
+        return this.untilDay === 0;
+      },
+      isTomorrow: function() {
+        return this.untilDay === 1;
+      },
+      isDayAfterTomorrow: function() {
+        return this.untilDay === 2;
       }
     },
     methods: {
@@ -79,7 +89,7 @@
       }
     },
     props: {
-      nowDate: '',
+      nowDate: String,
       garbageList: Array
     }
   });

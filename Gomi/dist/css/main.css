@@ -78,26 +78,103 @@ html {
 }
 
 body {
-  background: #ececec;
+  background: #fff;
+  box-sizing: border-box;
+  font-size: 20px;
   display: flex;
   flex-direction: column;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+header {
+  color: #fff;
+  background-color: #1e88e5;
+  font-size: 24px;
+  display: flex;
+  padding: 16px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  will-change: transform;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: center;
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 2px 9px 1px rgba(0, 0, 0, 0.12), 0 4px 2px -2px rgba(0, 0, 0, 0.2);
+  transition: transform 0.233s cubic-bezier(0, 0, 0.21, 1) 0.1s;
+}
+
+header .headerButton {
+  width: 24px;
+  height: 24px;
+  margin-right: 16px;
+  text-indent: -30000px;
+  overflow: hidden;
+  opacity: 0.54;
+  transition: opacity 0.333s cubic-bezier(0, 0, 0.21, 1);
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+header #butAdd {
+  background: url(/image/menu.svg) center center no-repeat;
+}
+
+.header__title {
+  font-weight: 400;
+  font-size: 20px;
+  flex: 1;
 }
 
 main {
   display: flex;
   flex-direction: column;
-  font-size: 20px;
-  height: 100vh;
+  flex: 1;
+}
+
+.region {
+  display: flex;
+  flex-direction: row;
+  font-size: 18pt;
+  padding: 10px 5px;
+}
+
+.region > div:nth-child(1) {
+  flex: 1;
+}
+
+.region > div:nth-child(2) {
+  white-space: nowrap;
+}
+
+.change-region-button {
+  background-color: #409eff;
+  border: 1px solid #409eff;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 12pt;
+  outline: none;
+  padding: 3px;
+}
+
+.change-region-button:hover, .change-region-button:active {
+  background-color: #3a8ee6;
+  border: 1px solid #3a8ee6;
 }
 
 .garbage-list {
   display: flex;
+  flex: 1;
   flex-direction: column;
-  height: 100vh;
 }
 
 .garbage-list > div {
-  border: 1px solid black;
+  border: 1px solid #444;
   flex: 1;
   padding: 5px;
 }
@@ -109,8 +186,12 @@ main {
 
 .garbage-title {
   flex: 1;
-  font-size: 25px;
+  font-size: 18px;
   line-height: 1.2em;
+}
+
+.garbage-title > div {
+  margin-bottom: 8px;
 }
 
 .garbage-schedule {
@@ -120,7 +201,6 @@ main {
 }
 
 .garbage-until-day {
-  color: #f00;
   flex: 1;
   font-size: 45px;
   text-align: center;
@@ -137,6 +217,25 @@ main {
   text-align: right;
 }
 
+.today {
+  background-color: #ff0;
+}
+
+.today .garbage-until-day {
+  color: #f00;
+}
+
+.tomorrow .garbage-until-day {
+  color: #f00;
+}
+
+.day-after-tomorrow .garbage-until-day {
+  color: #00f;
+}
+
+footer {
+  padding: 5px;
+}
 /*
  アニメーション
  https://developers.google.com/web/fundamentals/codelabs/your-first-pwapp/?hl=ja
